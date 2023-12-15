@@ -1,68 +1,67 @@
-    const canvas = document.getElementById("matrixRain");
-    const ctx = canvas.getContext("2d");
+const canvas = document.getElementById("matrixRain");
+const ctx = canvas.getContext("2d");
+const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+[]{}|;:'\",.<>/?`~";
+const matrixArray = matrix.split("");
+const fontSize = 15;
+const font = `${fontSize}px Courier New`;
+const fontColor = "#00FF00";
+const bgColor = "rgba(0, 0, 0, 0.05)";
+let columns, drops, resizeTimeout;
 
-    function setupCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
+function setupCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    columns = canvas.width / fontSize;
+}
 
-    setupCanvas();
-
-    const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+[]{}|;:'\",.<>/?`~";
-    const matrixArray = matrix.split("");
-
-    const fontSize = 15;
-    let columns = canvas.width / fontSize;
-
-    const drops = [];
+function initializeDrops() {
+    drops = [];
     for (let i = 0; i < columns; i++) {
         drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
     }
+}
 
-    let resizeTimeout;
+function resizeCanvas() {
+    setupCanvas();
+    initializeDrops();
+    draw();
+}
 
-    function draw() {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+function handleResize() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(resizeCanvas, 200);
+}
 
-        ctx.fillStyle = "#00FF00";
-        ctx.font = `${fontSize}px Courier New`;
+function draw() {
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        const numDrops = drops.length;
+    ctx.fillStyle = fontColor;
+    ctx.font = font;
 
-        for (let i = 0; i < numDrops; i++) {
-            const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    for (let i = 0; i < columns; i++) {
+        const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+        ctx.fillText(text, x, y);
 
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-
-            drops[i]++;
-        }
-    }
-
-    function resizeCanvas() {
-        setupCanvas();
-        columns = canvas.width / fontSize;
-        drops.length = 0;
-        for (let i = 0; i < columns; i++) {
-            drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+        if (y > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
         }
 
-        draw();
+        drops[i]++;
     }
+}
 
-    function handleResize() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(resizeCanvas, 200);
-    }
+window.addEventListener("resize", handleResize);
 
-    function matrixRain() {
-        draw();
-        requestAnimationFrame(matrixRain);
-    }
+function matrixRain() {
+    draw();
+    requestAnimationFrame(matrixRain);
+}
 
-    window.addEventListener("resize", handleResize);
-
+window.onload = function() {
+    setupCanvas();
+    initializeDrops();
     matrixRain();
+};
