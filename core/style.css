@@ -47,7 +47,7 @@ body {
     overflow-y: auto;
     animation: fadeIn 0.5s ease;
     scrollbar-width: thin;
-    scrollbar-color: #02cf02 #001400;
+    scrollbar-color: #02ad02 #001400;
 }
 
 .chat-log::-webkit-scrollbar {
