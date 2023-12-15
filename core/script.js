@@ -1,56 +1,53 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const API = "https://discipline-investments-bracelet-ana.trycloudflare.com";
+    const API = "https://mt-casting-wednesday-les.trycloudflare.com";
     const URI = `${API}/v1/completions`;
-    const log = ["Ai:\nHello.\n"];
+    const log = ["Uoonox:\nHello.\n"];
     const userInput = document.getElementById("userInput");
     const sendButton = document.getElementById("sendButton");
 
-    if (userInput) {
-        userInput.addEventListener("keypress", function (event) {
-            if (event.which === 13) {
-                sendMessage();
-            }
-        });
-        userInput.focus();
-    } else {
-        console.error("Could not find the 'userInput' element.");
-    }
+    userInput.addEventListener("keypress", function (event) {
+        if (event.which === 13) {
+            sendMessage();
+        }
+    });
+    userInput.focus();
 
-    if (sendButton) {
-        sendButton.addEventListener("click", sendMessage);
-    } else {
-        console.error("Could not find the 'sendButton' element.");
-    }
+    sendButton.addEventListener("click", sendMessage);
 
-    function run(text) {
+    async function run(text) {
         const request = {
-            prompt: log.join("") + `User:\n${text}\nAi:\n`,
+            prompt: log.join("") + `User:\n${text}\nUoonox:\n`,
             stop: ["User:"],
             temperature: 0.9,
             top_p: 0.9,
             max_tokens: 250
         };
-        
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", URI, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
 
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-                const result = response.choices[0].text;
-                log.push(`User:\n${text}\nAi:\n${result}\n`);
-                displayMessage(result, "ai-message");
+        try {
+            const response = await fetch(URI, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(request)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch data. Status: ${response.status}`);
             }
-        };
 
-        xhr.send(JSON.stringify(request));
+            const result = (await response.json()).choices[0].text;
+            log.push(`User:\n${text}\nUoonox:\n${result}\n`);
+            displayMessage(result, "ai-message");
+        } catch (error) {
+            console.error("Error:", error.message);
+        }
     }
 
     function displayMessage(message, className) {
         const chatLog = document.getElementById("chatLog");
         const messageDiv = document.createElement("div");
-        messageDiv.className = "message " + className;
+        messageDiv.className = `message ${className}`;
         messageDiv.innerHTML = addLineBreaks(message);
         chatLog.appendChild(messageDiv);
         chatLog.scrollTop = chatLog.scrollHeight;
@@ -63,9 +60,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function sendMessage() {
         const userInput = document.getElementById("userInput");
-        const message = userInput.value;
+        const message = userInput.value.trim();
 
-        if (message.trim() !== "") {
+        if (message !== "") {
             displayMessage(message, "user-message");
             run(message);
             userInput.value = "";
