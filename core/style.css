@@ -38,7 +38,21 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     overflow: hidden;
+
+    /* Add border properties */
+    border: 2px solid transparent; /* Start with a transparent border */
+    animation: fadeInBorder 2s ease 0.5s forwards; /* 1s delay before the animation starts */
 }
+
+@keyframes fadeInBorder {
+    from {
+        border-color: transparent;
+    }
+    to {
+        border-color: #004200;
+    }
+}
+
 
 /* Chat Log */
 .chat-log {
@@ -47,7 +61,7 @@ body {
     overflow-y: auto;
     animation: fadeIn 0.5s ease;
     scrollbar-width: thin;
-    scrollbar-color: #02ad02 #001400;
+    scrollbar-color: #004200 #001400;
 }
 
 .chat-log::-webkit-scrollbar {
@@ -103,6 +117,7 @@ input {
 
 input:focus {
     border-color: #00ff00; /* Green */
+    outline: none;
 }
 
 button {
@@ -119,7 +134,7 @@ button {
 }
 
 button:hover {
-    background-color: #00cc00; /* Lighter green on hover */
+    background-color: #018001; /* Lighter green on hover */
 }
 
 canvas#matrixRain {
