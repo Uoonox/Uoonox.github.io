@@ -11,7 +11,7 @@ let columns, drops, resizeTimeout;
 function setupCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    columns = canvas.width / fontSize;
+    columns = Math.floor(canvas.width / fontSize);
 }
 
 function initializeDrops() {
@@ -24,7 +24,6 @@ function initializeDrops() {
 function resizeCanvas() {
     setupCanvas();
     initializeDrops();
-    draw();
 }
 
 function handleResize() {
@@ -33,6 +32,8 @@ function handleResize() {
 }
 
 function draw() {
+    if (!matrixEnabled) return;
+
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -60,7 +61,7 @@ function matrixRain() {
     requestAnimationFrame(matrixRain);
 }
 
-window.onload = function() {
+window.onload = function () {
     setupCanvas();
     initializeDrops();
     matrixRain();
