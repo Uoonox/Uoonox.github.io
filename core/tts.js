@@ -2,7 +2,7 @@ const speakText = (text) => {
     let speech = new SpeechSynthesisUtterance();
     speech.text = text;
     let englishVoices = speechSynthesis.getVoices().filter(voice => voice.lang.startsWith('en'));
-    speech.voice = englishVoices[3];
+    speech.voice = englishVoices[0];
     speech.volume = 1;
     speech.rate = 1;
     speech.pitch = 1;
