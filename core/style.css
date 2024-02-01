@@ -127,7 +127,7 @@ button {
 }
 
 button:hover {
-    background-color: #ddd;
+    background-color: var(--light-grey);
 }
 
 /* Modal Styles */
@@ -166,7 +166,7 @@ button:hover {
 }
 
 .close:hover, .close:focus {
-    color: black;
+    color: var(--text-color);
     text-decoration: none;
     cursor: pointer;
 }
@@ -217,7 +217,7 @@ button:hover {
 }
 
 #darkModeToggle:hover, #memoryDeleteButton:hover {
-    background-color: #ddd;
+    background-color: var(--light-grey);
 }
 
 #memoryDeleteButton {
