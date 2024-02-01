@@ -147,15 +147,43 @@ button:hover {
     background-color: var(--soft-white);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 10% auto;
+    margin: 5% auto;
     padding: 20px;
     width: 30%;
     box-sizing: border-box;
     transition: all 0.3s ease;
+    border: 1px solid var(--medium-grey);
+}
+
+.modal-content h2, .modal-content h3 {
+    color: var(--text-color);
+    margin-top: 0;
+}
+
+.modal-content hr {
+    border-top: 1px solid var(--light-grey);
+    margin: 20px 0;
+}
+
+.modal-content a {
+    color: #FFBB3F;
+    text-decoration: none;
+}
+
+.modal-content a:hover {
+    text-decoration: underline;
 }
 
 .modal-content.active {
     transform: scale(1.05);
+}
+
+.modal-content input[type="text"] {
+    width: 55%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--light-grey);
+    border-radius: 3px;
 }
 
 .close {
