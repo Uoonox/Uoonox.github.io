@@ -1,28 +1,40 @@
+/* Define CSS Variables */
+:root {
+    --primary-font: 'Roboto', sans-serif;
+    --text-color: #333;
+    --light-grey: #ccc;
+    --medium-grey: #aaa;
+    --very-light-grey: #f0f0f0;
+    --modal-bg-color: rgba(0, 0, 0, 0.4);
+    --soft-white: #fff;
+}
+
+/* Keyframes for animations */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes slideIn {
-    from {
-        transform: translateY(20px);
-    }
-    to {
-        transform: translateY(0);
-    }
+    from { transform: translateY(20px); }
+    to { transform: translateY(0); }
+}
+
+@keyframes fadeInBorder {
+    from { border-color: transparent; }
+    to { border-color: var(--light-grey); }
 }
 
 /* General Styles */
+body, input, button {
+    font-family: var(--primary-font);
+    color: var(--text-color);
+}
+
 body {
-    font-family: 'Courier New', Courier, monospace;
     margin: 0;
     padding: 0;
-    background-color: #000;
-    color: #00ff00; /* Green text */
+    background: linear-gradient(135deg, rgba(255,182,193,0.5), rgba(173,216,230,0.5), rgba(221,160,221,0.5), var(--soft-white));
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,49 +44,35 @@ body {
 /* Chat Container */
 .chat-container {
     max-width: 800px;
-    width: 800px;
+    width: 100%;
     margin: 20px auto;
-    background-color: #000;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     overflow: hidden;
-
-    /* Add border properties */
-    border: 2px solid transparent; /* Start with a transparent border */
-    animation: fadeInBorder 2s ease 0.5s forwards; /* 1s delay before the animation starts */
+    border: 2px solid transparent;
+    animation: fadeInBorder 2s ease 0.3s forwards;
 }
-
-@keyframes fadeInBorder {
-    from {
-        border-color: transparent;
-    }
-    to {
-        border-color: #004200;
-    }
-}
-
 
 /* Chat Log */
 .chat-log {
     height: 500px;
     padding: 20px;
     overflow-y: auto;
-    animation: fadeIn 0.5s ease;
+    animation: fadeIn 0.3s ease;
     scrollbar-width: thin;
-    scrollbar-color: #004200 #001400;
+    scrollbar-color: var(--medium-grey) var(--very-light-grey);
 }
 
 .chat-log::-webkit-scrollbar {
-    width: 12px;
+    width: 7px;
+    border-radius: 7px;
+    background-color: var(--very-light-grey);
 }
 
 .chat-log::-webkit-scrollbar-thumb {
-    background-color: #00ff00; /* Green */
-    border-radius: 10px;
-}
-
-.chat-log::-webkit-scrollbar-track {
-    background-color: #001400; /* Dark green */
+    background-color: var(--medium-grey);
+    border-radius: 5px;
 }
 
 /* Message Styles */
@@ -87,60 +85,141 @@ body {
     animation: slideIn 0.3s ease;
 }
 
-.ai-message {
-    background-color: #001400; /* Dark green */
+.ai-message, .user-message {
+    background-color: var(--very-light-grey);
 }
 
-.user-message {
-    background-color: #004200; /* Darker green */
+.ai-message {
+    background: linear-gradient(200deg, rgba(255, 202, 210, 0.2), rgba(204, 242, 255, 0.2), rgba(255, 200, 255, 0.2));
 }
 
 /* User Input Styles */
 .user-input {
     display: flex;
     padding: 15px;
-    border-top: 1px solid #004200; /* Darker green */
+    border-top: 1px solid var(--light-grey);
     animation: slideIn 0.3s ease;
+}
+
+input, button {
+    border-radius: 3px;
 }
 
 input {
     flex: 1;
     padding: 10px;
-    border: 1px solid #004200; /* Darker green */
-    border-radius: 3px;
+    border: 1px solid var(--light-grey);
+    background-color: var(--very-light-grey);
     font-size: 14px;
-    transition: border-color 0.3s ease;
-    background-color: #001400; /* Dark green */
-    color: #00ff00; /* Green text */
-    font-family: 'Courier New', Courier, monospace;
 }
 
 input:focus {
-    border-color: #00ff00; /* Green */
+    border-color: var(--medium-grey);
     outline: none;
 }
 
 button {
     padding: 10px 16px;
     margin-left: 8px;
-
-    background-color: #001400; /* Dark green */
-    color: #00ff00; /* Green text */
+    background-color: var(--very-light-grey);
     border: none;
-    border-radius: 3px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-family: 'Courier New', Courier, monospace;
 }
 
 button:hover {
-    background-color: #018001; /* Lighter green on hover */
+    background-color: #ddd;
 }
 
-canvas#matrixRain {
+/* Modal Styles */
+.modal {
+    display: none;
     position: fixed;
-    top: 0;
+    z-index: 1000;
     left: 0;
-    pointer-events: none;
-    z-index: -1;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--modal-bg-color);
+}
+
+.modal-content {
+    background-color: var(--soft-white);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10% auto;
+    padding: 20px;
+    width: 30%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.modal-content.active {
+    transform: scale(1.05);
+}
+
+.close {
+    color: var(--medium-grey);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%;
+    }
+}
+
+/* Dark Mode */
+.dark-mode {
+    --text-color: #fff;
+    --light-grey: #555;
+    --medium-grey: #333;
+    --very-light-grey: #222;
+    --modal-bg-color: rgba(255, 255, 255, 0.4);
+    --soft-white: #181818;
+    background: linear-gradient(135deg, rgb(33, 36, 41), rgba(24,24,24,1));
+}
+
+.dark-mode .chat-container {
+    background-color: rgba(28, 28, 28, 0.9);
+}
+
+.dark-mode .ai-message {
+    background: #2a2a2a;
+}
+
+.dark-mode .user-message {
+    background-color: #333;
+}
+
+/* Toggle Buttons */
+#darkModeToggle, #memoryDeleteButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: var(--very-light-grey);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    font-size: 24px;
+    z-index: 100;
+}
+
+#darkModeToggle:hover, #memoryDeleteButton:hover {
+    background-color: #ddd;
+}
+
+#memoryDeleteButton {
+    right: 85px;
 }
