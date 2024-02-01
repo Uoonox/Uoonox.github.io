@@ -1,13 +1,11 @@
-let ttsEnabled = true;
-let matrixEnabled = true;
-
+let ttsEnabled = false;
 const speechSynthesis = window.speechSynthesis || window.webkitSpeechSynthesis;
 
 function displayMessage(message, className) {
     const chatLog = document.getElementById("chatLog");
     const messageDiv = document.createElement("div");
     messageDiv.className = `message ${className}`;
-    messageDiv.innerHTML = addLineBreaks(message);
+    messageDiv.innerHTML = message;
     chatLog.appendChild(messageDiv);
     chatLog.scrollTop = chatLog.scrollHeight;
 }
@@ -35,4 +33,41 @@ document.addEventListener("DOMContentLoaded", function () {
             userInput.value = "";
         }
     }
+    
+    function sendFirstMessage() {
+        let storedLog = JSON.parse(localStorage.getItem('chatLog'));
+        document.title = `Uoonox - ${char}`;
+
+        if (storedLog && storedLog.length > 0) {
+            storedLog.forEach(logEntry => {
+                const messages = logEntry.split('\n\n').filter(message => message.trim() !== '');
+                messages.forEach(message => {
+                    let messageType;
+                    let formattedMessage;
+                    if (message.includes(`${user}:`)) {
+                        messageType = "user-message";
+                        formattedMessage = message.replace(`${user}:\n`, '');
+                    } else if (message.includes(`${char}:`)) {
+                        messageType = "ai-message";
+                        formattedMessage = message.replace(`${char}:\n`, '');
+                    }
+                    if (formattedMessage) {
+                        formattedMessage = formattedMessage.replace(/\n/g, '<br>');
+                        displayMessage(formattedMessage, messageType);
+                    }
+                });
+            });
+        } else {
+            let formattedFirstMsg = firstmsg.replace(/\n/g, '<br>');
+            displayMessage(formattedFirstMsg, "ai-message");
+        }
+    }
+
+    sendFirstMessage();
 });
+
+document.getElementById('memoryDeleteButton').addEventListener('click', () => {
+    localStorage.removeItem('chatLog');
+    location.reload();
+});
+
