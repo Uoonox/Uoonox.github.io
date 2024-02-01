@@ -184,7 +184,7 @@ button:hover {
     --light-grey: #555;
     --medium-grey: #333;
     --very-light-grey: #222;
-    --modal-bg-color: rgba(255, 255, 255, 0.4);
+    --modal-bg-color: rgba(40, 40, 40, 0.4);
     --soft-white: #181818;
     background: linear-gradient(135deg, rgb(33, 36, 41), rgba(24,24,24,1));
 }
